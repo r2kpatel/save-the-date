@@ -108,9 +108,11 @@ const CONFIG = {
     anim.onfinish = () => setTimeout(scrollToDetails, REVEAL.scrollPause);
   }
 
-  // Deep links (#invitation, #details) skip the animation.
+  // The animation plays on every load and refresh. For testing, add ?skip to the
+  // address to jump straight to the finished state.
   const revealEl = $('#reveal');
-  if (['#invitation', '#details'].includes(location.hash)) {
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);   // drop any leftover #hash
+  if (new URLSearchParams(location.search).has('skip')) {
     finishReveal();
     revealEl.classList.add('is-in');
   } else {
@@ -126,6 +128,13 @@ const CONFIG = {
     (document.fonts ? document.fonts.ready : Promise.resolve()).then(start, start);
     setTimeout(start, 2500);   // don't wait forever if the fonts are slow
   }
+
+  // "Share your address" scrolls down without writing #details into the address bar,
+  // so refreshing the page replays the animation instead of skipping it.
+  $('#toDetails').addEventListener('click', (e) => {
+    e.preventDefault();
+    $('#details').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  });
 
   // ---- Add to calendar ----------------------------------------------------
   const c = CONFIG.calendar;
