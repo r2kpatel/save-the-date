@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d3cabc"/>
+      <stop offset="1" stop-color="#8d857a"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#g)"/>
+  <circle cx="160" cy="140" r="38" fill="#6f685f"/>
+  <path d="M92 300c8-60 40-112 68-112s60 52 68 112z" fill="#6f685f"/>
+  <circle cx="243" cy="132" r="36" fill="#5c554d"/>
+  <path d="M176 300c8-62 40-118 67-118s59 56 67 118z" fill="#5c554d"/>
+  <text x="200" y="52" text-anchor="middle" font-family="Georgia, serif" font-style="italic" font-size="26" fill="#f4ecdc">your photo here</text>
+</svg>

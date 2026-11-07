@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Keep the site out of search engines; guests reach it from the link on the card. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Save the Date · Rahul &amp; Mansi · 08.22.2027</title>
+  <meta name="description" content="Rahul &amp; Mansi are getting married. Save the date: August 22, 2027, Princeton, NJ.">
+  <!-- Lets the CSS hide the card until fonts load, so it fades in instead of flashing. -->
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Josefin+Sans:wght@300;400&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <!-- Bump ?v= after edits so browsers don't show a cached old version -->
+  <link rel="stylesheet" href="styles.css?v=10">
+</head>
+<body>
+<main>
+
+  <!-- 1. Sliding photo-strip reveal -->
+  <section id="reveal" class="reveal" aria-label="Save the date">
+    <h1 class="visually-hidden">Save the Date: Rahul &amp; Mansi, August 22, 2027</h1>
+    <div class="stage" id="stage">
+      <!-- The strip sits BEHIND the card and slides down out of its bottom edge.
+           Photos: assets/photo1.jpg ... photo4.jpg (photo4 shows in the window first). -->
+      <div class="strip-track" aria-hidden="true">
+        <div class="strip" id="strip">
+          <div class="strip-label"><span>Scroll down<br>for the<br>details</span></div>
+          <div class="frame" style="background-image:url(assets/photo1.jpg),url(assets/placeholder.svg)"></div>
+          <div class="frame" style="background-image:url(assets/photo2.jpg),url(assets/placeholder.svg)"></div>
+          <div class="frame" style="background-image:url(assets/photo3.jpg),url(assets/placeholder.svg)"></div>
+          <div class="frame" style="background-image:url(assets/photo4.jpg),url(assets/placeholder.svg)"></div>
+          <p class="strip-names">Rahul<br>&amp;<br>Mansi</p>
+          <div class="seal"></div>
+          <svg class="tassel" viewBox="0 0 40 96" aria-hidden="true">
+            <defs>
+              <linearGradient id="tg" x1="0" x2="1">
+                <stop offset="0" stop-color="#9c7a3c"/><stop offset=".5" stop-color="#e7cd8f"/><stop offset="1" stop-color="#8a6a2e"/>
+              </linearGradient>
+            </defs>
+            <path d="M20 0 V20" stroke="#b8954f" stroke-width="2.4" fill="none"/>
+            <ellipse cx="20" cy="24" rx="5" ry="5.5" fill="url(#tg)"/>
+            <path d="M14.5 29 H25.5 L28 34 H12 Z" fill="url(#tg)"/>
+            <path d="M12 34 C11 58 8 78 5 94 H35 C32 78 29 58 28 34 Z" fill="url(#tg)"/>
+            <g stroke="#7d5f26" stroke-width=".7" opacity=".55">
+              <path d="M16 36 L12 93"/><path d="M20 36 V94"/><path d="M24 36 L28 93"/>
+              <path d="M14 36 L8 93"/><path d="M26 36 L32 93"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card" aria-hidden="true">
+        <p class="card-save">Save</p>
+        <p class="card-the">the</p>
+        <p class="card-date">Date</p>
+        <!-- Window into the strip: a synced copy of the strip is inserted here by script.js -->
+        <div class="window" id="window"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Invitation -->
+  <section id="invitation" class="screen invitation">
+    <header class="std-head">
+      <p class="script-title">Save the Date</p>
+      <p class="eyebrow">Rahul &amp; Mansi</p>
+      <p class="std-date">08.22.2027</p>
+    </header>
+
+    <div class="card-stack">
+
+      <article class="invite-card">
+        <p class="small">The celebration is to be held on</p>
+        <p class="small strong">August 22, 2027</p>
+        <p class="small">Princeton, New Jersey</p>
+        <p class="script">We'd love for you to join us<br>at our wedding!</p>
+        <p class="script sig">- Rahul &amp; Mansi</p>
+        <p class="small muted">Formal invitation to follow</p>
+      </article>
+    </div>
+
+    <div class="cal-links">
+      <a id="gcal" href="#" target="_blank" rel="noopener">Add to Google Calendar</a>
+      <span aria-hidden="true">·</span>
+      <a id="ics" href="#" download="rahul-mansi-wedding.ics">Add to Apple / Outlook</a>
+    </div>
+
+    <p class="lede">Please click below to share your address!</p>
+    <a class="outline-btn" href="#details" id="toDetails">Share your address</a>
+  </section>
+
+  <!-- 3. Address form -->
+  <section id="details" class="screen details">
+    <h2 class="script-title">Details</h2>
+    <p class="lede">We'd love for you to be part of our celebration! Please share your mailing address so we can send the official invitation with all the details.</p>
+    <div class="polaroid" aria-hidden="true">
+      <div class="polaroid-img" style="background-image:url(assets/photo4.jpg),url(assets/placeholder.svg)"></div>
+    </div>
+    <p class="eyebrow">Please kindly reply by December 15, 2026</p>
+    <div id="formHost" class="form-host"></div>
+  </section>
+
+</main>
+
+<!-- Address form; submissions go to the Google Form set in script.js (CONFIG.googleFormPrefilledLink) -->
+<template id="addressFormTpl">
+  <form class="preview-form" novalidate>
+    <label>Your full name*<input name="name" type="text" autocomplete="name" required maxlength="200"></label>
+    <label>Mailing address*<textarea name="address" rows="3" autocomplete="street-address" required maxlength="500"></textarea></label>
+    <label>Email<input name="email" type="email" autocomplete="email" maxlength="200"></label>
+    <button class="outline-btn" type="submit">Submit</button>
+    <p class="note" role="status" aria-live="polite" hidden></p>
+  </form>
+</template>
+
+<script src="script.js?v=11"></script>
+</body>
+</html>

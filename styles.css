@@ -1,0 +1,293 @@
+:root {
+  --maroon: #3b2314;        /* text on the cream cards (matches the background brown) */
+  --text-light: #f1ddc5;    /* light text on the brown background */
+  --bg: #3b2314;            /* main background: chocolate brown */
+  --bg-light: #4b3022;      /* gradient highlight at the top */
+  --bg-deep: #1f130c;       /* gradient shadow at the bottom */
+  --gold: #d4b06a;
+  --cream: #f4ecdc;
+  --ink: #2b1b14;
+  --script: 'Pinyon Script', cursive;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Josefin Sans', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, var(--bg-light) 0%, var(--bg) 40%, var(--bg) 60%, var(--bg-deep) 100%) fixed;
+  color: var(--text-light);
+  font-family: var(--sans);
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden; /* tilted card must never cause sideways scroll on phones */
+}
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 3rem 1.25rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-weight: 300;
+  font-size: .95rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* ---- Sliding photo-strip reveal -------------------------------------------
+   All sizes are fixed px so the strip, the card window and the synced copy in
+   the window line up exactly. If you change a size here, update the matching
+   numbers in REVEAL in script.js. */
+.reveal {
+  display: flex;
+  justify-content: center;
+  padding: max(2.5rem, calc(50vh - 255px * var(--s, 1))) 1rem 2rem;
+}
+
+/* Soft entrance: the card fades and drifts up once fonts are ready (script.js adds .is-in).
+   Only applies when JS runs, so the card still shows if it doesn't. */
+.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 1.4s ease, transform 1.6s cubic-bezier(.22,1,.36,1); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+
+/* The whole card + strip is drawn at 330px wide, then scaled up by --s
+   (set in script.js: up to 1.25x, smaller on narrow phones so it always fits). */
+.stage {
+  position: relative;
+  width: 330px;
+  height: 1080px;          /* card + fully extended strip + tassel */
+  flex: none;
+  transform: scale(var(--s, 1));
+  transform-origin: top center;
+  margin-bottom: calc(1080px * (var(--s, 1) - 1));   /* reserve the scaled height */
+}
+
+/* Clips the strip at the card's top edge so it never peeks out above it */
+.strip-track {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.strip {
+  position: absolute;
+  left: 117px;             /* (330 - 96) / 2 */
+  top: -104px;             /* start: photo 4 sits in the card window */
+  width: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 8px 0;
+  background: #fbf8f2;
+  box-shadow: 0 6px 14px rgba(0,0,0,.45);
+  will-change: transform;
+}
+
+.strip-label {
+  height: 101px;           /* same as a photo frame */
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px rgba(212,176,106,.5);
+}
+.strip-label span {
+  font-family: var(--sans);
+  font-size: .6rem;
+  line-height: 1.6;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.frame {
+  height: 101px;           /* 80 x 101 = 3.5 : 4.4 (portrait) */
+  background-size: auto 170%;          /* zoomed in for a tight photo-booth crop */
+  background-position: 50% 18%;        /* keep faces in frame */
+  filter: grayscale(1) contrast(1.05);
+}
+
+.strip-names {
+  height: 60px;
+  margin: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  font-family: var(--script);
+  font-size: 1rem;
+  line-height: 1.05;
+  color: #a8823d;
+}
+
+.seal {
+  height: 34px;
+  position: relative;
+  display: grid;
+  place-items: start center;
+}
+.seal::before {           /* gold grommet the tassel hangs from */
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #3a1c10 0 3px, #e7cd8f 3.5px, #9c7a3c 7px);
+}
+
+.tassel {
+  position: absolute;
+  bottom: -88px;
+  left: 50%;
+  width: 34px;
+  height: 92px;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 4px 4px rgba(0,0,0,.45));
+}
+
+.card {
+  position: absolute;
+  top: 0; left: 0;
+  width: 330px;
+  height: 540px;           /* taller at top for the lettering, at bottom so the notch sits below the names */
+  padding-top: 26px;
+  color: var(--maroon);
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255,255,255,.5), transparent 45%),
+    repeating-linear-gradient(35deg, rgba(120,90,50,.025) 0 2px, transparent 2px 5px),
+    #efe6d3;
+  box-shadow: 0 22px 44px rgba(0,0,0,.55), inset 0 0 0 1px rgba(120,90,50,.15);
+  /* thumb notch at the bottom edge, like a real card sleeve */
+  -webkit-mask: radial-gradient(circle 24px at 50% 100%, transparent 23px, #000 24px);
+          mask: radial-gradient(circle 24px at 50% 100%, transparent 23px, #000 24px);
+}
+.card p { margin: 0; line-height: 1; }
+.card-save, .card-date { font-family: var(--script); font-size: 8.2rem; }
+.card-save { margin-left: -.5rem !important; text-align: left; padding-left: .9rem; }
+.card-the  { margin: -.4rem 0 -.6rem !important; font-family: var(--script); font-size: 2.4rem;
+             position: relative; top: -17px; }   /* nudged up so it sits midway between Save and Date */
+.card-date { text-align: right; padding-right: .9rem; }
+
+/* Window cut into the card. script.js puts a synced copy of the strip inside. */
+.window {
+  position: absolute;
+  top: 340px;
+  left: 125px;             /* (330 - 80) / 2 */
+  width: 80px;
+  height: 101px;
+  overflow: hidden;
+  background: var(--bg-deep);
+  box-shadow: 0 0 0 3px #efe6d3, 0 0 0 4px rgba(120,90,50,.35);
+}
+.window::after {          /* inner shadow so the window looks recessed */
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,.45);
+  pointer-events: none;
+}
+.window .strip { box-shadow: none; }
+
+/* Heading at the top of the invitation section */
+.std-head { display: grid; gap: .6rem; }
+.std-head .eyebrow { position: relative; top: -11px; }   /* sit midway between the script title and the date */
+.std-date { margin: 0; font-family: var(--sans); font-weight: 300; font-size: clamp(1.6rem, 6.5vw, 2.4rem); letter-spacing: .14em; line-height: 1; white-space: nowrap; }
+
+.outline-btn {
+  display: inline-block;
+  padding: .85rem 1.7rem;
+  border: 1px solid var(--text-light);
+  background: transparent;
+  color: var(--text-light);
+  font-family: var(--sans);
+  font-size: .85rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .3s, color .3s;
+}
+.outline-btn:hover:not(:disabled), .outline-btn:focus-visible { background: var(--text-light); color: var(--maroon); outline: none; }
+.outline-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Invitation */
+.card-stack { position: relative; width: min(440px, 88vw); margin-top: 2rem; }
+
+.invite-card {
+  padding: 2.4rem 1.6rem 1.6rem;
+  background: var(--cream);
+  color: var(--ink);
+  transform: rotate(-3deg);
+  box-shadow: 0 18px 40px rgba(0,0,0,.5);
+}
+.small { margin: .3rem 0; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; }
+.strong { font-weight: 400; color: var(--maroon); }
+.muted { opacity: .7; }
+.script {
+  margin: 1.1rem 0 .2rem;
+  font-family: var(--script);
+  font-size: clamp(1.6rem, 6vw, 2.1rem);
+  line-height: 1.25;
+  color: var(--maroon);
+}
+.sig { margin: 0 0 1.1rem; font-size: clamp(1.3rem, 5vw, 1.7rem); }
+
+.cal-links { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; font-size: .8rem; letter-spacing: .1em; }
+.cal-links a { color: var(--gold); text-underline-offset: 4px; }
+
+.lede { max-width: 34rem; margin: 0; font-size: .85rem; line-height: 1.8; letter-spacing: .12em; text-transform: uppercase; }
+
+/* Details / form */
+.script-title { margin: 0; font-family: var(--script); font-weight: 400; font-size: clamp(3rem, 10vw, 4.5rem); color: var(--gold); }
+
+.polaroid {
+  width: 150px;
+  padding: 10px 10px 34px;
+  background: #fff;
+  transform: rotate(8deg);
+  box-shadow: 0 12px 24px rgba(0,0,0,.45);
+  transition: transform .4s ease;
+}
+.polaroid:hover { transform: rotate(0) scale(1.05); }
+.polaroid-img { aspect-ratio: 1; background-size: cover; background-position: center; filter: grayscale(1); }
+
+.form-host { width: min(640px, 94vw); }
+.form-host iframe { width: 100%; height: 900px; border: 0; border-radius: 8px; background: var(--cream); }
+
+.preview-form { display: grid; gap: 1.1rem; width: min(440px, 100%); margin: 0 auto; text-align: left; }
+.preview-form label { display: grid; gap: .45rem; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+.preview-form input, .preview-form textarea {
+  width: 100%;
+  padding: .75rem;
+  border: 1px solid rgba(241,221,197,.6);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-light);
+  font: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+}
+.preview-form .outline-btn { justify-self: center; }
+.note { margin: 0; text-align: center; font-size: .85rem; letter-spacing: .06em; }
+.note[hidden] { display: none; }
+
+.fade-in { animation: fadeUp .9s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
